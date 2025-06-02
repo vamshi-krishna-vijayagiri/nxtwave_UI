@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getUserDetails } from '../api/getUserDetails';
 import '../App.css';
 import Btn from '../components/Button';
 import { deleteAccount } from '../api/deleteAccount';
+import ToastMessage from '../components/Snackbar';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
   const userId = localStorage.getItem('userId');
+
+  const [toast, setToast] = useState({
+    open: false,
+    message: '',
+    severity: 'success' as 'success' | 'error' | 'info' | 'warning',
+  });
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -27,10 +36,21 @@ const Home = () => {
     if (!userId) return;
     try {
       const res = await deleteAccount({ id: userId });
-      console.log(res.message);
-      localStorage.removeItem('userId');
-      // Redirect to login or goodbye page
+      if (res.message === 'Account Deleted Successfully') {
+        setToast({
+            open: true,
+            message:'User Deleted Successfully',
+            severity: 'success',
+        });
+        localStorage.removeItem('userId');
+        setTimeout(() => navigate('/'), 1500);
+      }
     } catch (err) {
+      setToast({
+            open: true,
+            message: 'Account Deletion Failed, Try After Sometime',
+            severity: 'error',
+        });
       console.error('Account deletion failed:', err);
     }
   };
@@ -66,6 +86,12 @@ const Home = () => {
       ) : (
         <p className="loading-text">Loading user details...</p>
       )}
+      <ToastMessage
+        open={toast.open}
+        message={toast.message}
+        severity={toast.severity}
+        onClose={() => setToast({ ...toast, open: false })}
+      />
     </div>
   );
 };

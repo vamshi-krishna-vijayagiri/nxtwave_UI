@@ -34,7 +34,7 @@ const Register = () => {
         if (result.message === 'Success') {
             setToast({
                 open: true,
-                message:'User Registration Successfully',
+                message:'User Registered Successfully',
                 severity: 'success',
             });
             setForm({
@@ -56,7 +56,7 @@ const Register = () => {
     } catch (error: any) {
         setToast({
             open: true,
-            message: 'Registration failed: Try after some time',
+            message: 'Registration Failed, Try After Sometime',
             severity: 'error',
         });
     }
@@ -97,6 +97,7 @@ const Register = () => {
           label="Company Name"
           value={form.company}
           onChange={(val) => handleChange('company', val)}
+          required
         />
 
         <TextInputField
@@ -104,6 +105,7 @@ const Register = () => {
           value={form.age}
           onChange={(val) => handleChange('age', val)}
           type="number"
+          required
         />
 
         <TextInputField

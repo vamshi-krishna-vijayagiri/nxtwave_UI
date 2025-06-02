@@ -24,7 +24,7 @@ const Login = () => {
       if (result?.userId) {
         setToast({
             open: true,
-            message: 'Login successful',
+            message: 'Login Successfull',
             severity: 'success',
         });
 
@@ -38,7 +38,7 @@ const Login = () => {
     } catch (error: any) {
         const message = error?.response?.status === 401
             ? 'Invalid Credentials'
-            : 'Login failed: Try after some time';
+            : 'Login Failed, Try After Sometime';
 
         setToast({
             open: true,
